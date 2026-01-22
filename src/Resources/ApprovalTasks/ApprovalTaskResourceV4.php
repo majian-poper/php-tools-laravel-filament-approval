@@ -2,30 +2,31 @@
 
 namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks;
 
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components;
+use Filament\Schemas\Schema;
 use PHPTools\LaravelFilamentApproval\Concerns\InteractsWithApprovalTasks;
 use PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks\Schemas\ApprovalTaskInfolist;
 
-class ApprovalTaskResource extends Resource
+class ApprovalTaskResourceV4 extends Resource
 {
     use InteractsWithApprovalTasks;
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
+        return $schema
             ->schema([
-                Infolists\Components\Section::make()
+                Components\Section::make()
                     ->schema(ApprovalTaskInfolist::schema())
-                    ->columns(2),
+                    ->columns(2)
+                    ->columnSpanFull(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ApprovalsRelationManager::class,
+            RelationManagers\ApprovalsRelationManagerV4::class,
             RelationManagers\StepsRelationManager::class,
         ];
     }
@@ -33,8 +34,8 @@ class ApprovalTaskResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListApprovalTasks::route('/'),
-            'view' => Pages\ViewApprovalTask::route('/{record}'),
+            'index' => Pages\ListApprovalTasksV4::route('/'),
+            'view' => Pages\ViewApprovalTaskV4::route('/{record}'),
         ];
     }
 }

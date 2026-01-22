@@ -4,13 +4,12 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks\RelationManag
 
 use Filament\Infolists;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Schemas\Schema;
 use PHPTools\Approval\Enums\ApprovableEvent;
 use PHPTools\Approval\Models\Approval;
 use PHPTools\LaravelFilamentApproval\Concerns\InteractsWithApprovalsRelation;
-use PHPTools\LaravelFilamentApproval\FilamentApprovalPlugin;
 
-class ApprovalsRelationManager extends RelationManager
+class ApprovalsRelationManagerV4 extends RelationManager
 {
     use InteractsWithApprovalsRelation;
 
@@ -22,21 +21,14 @@ class ApprovalsRelationManager extends RelationManager
 
     protected function getViewAction()
     {
-        $version = FilamentApprovalPlugin::getFilamentMajorVersion();
-
-        $viewAction = [
-            3 => \Filament\Tables\Actions\ViewAction::class,
-            4 => \Filament\Actions\ViewAction::class,
-        ][$version];
-
-        return $viewAction::make('view')
-            ->modalWidth(static fn(): MaxWidth => MaxWidth::ScreenExtraLarge)
+        return \Filament\Actions\ViewAction::make('view')
+            ->modalWidth(static fn() => \Filament\Support\Enums\Width::ScreenExtraLarge)
             ->infolist($this->configureInfolist(...));
     }
 
-    protected function configureInfolist(Infolists\Infolist $infolist): Infolists\Infolist
+    protected function configureInfolist(Schema $schema): Schema
     {
-        return $infolist->schema(
+        return $schema->schema(
             [
                 Infolists\Components\TextEntry::make('approvable_title')
                     ->label(__('laravel-filament-approval::model.approval.approvable'))
@@ -57,15 +49,14 @@ class ApprovalsRelationManager extends RelationManager
                     ->badge()
                     ->color('warning')
                     ->visible(static fn(?string $state): bool => filled($state)),
-                Infolists\Components\Split::make(
-                    [
+                \Filament\Schemas\Components\Grid::make(2)
+                    ->schema([
                         Infolists\Components\KeyValueEntry::make('old_values_for_display')
                             ->label(__('laravel-filament-approval::model.approval.old_values')),
                         Infolists\Components\KeyValueEntry::make('new_values_for_display')
                             ->label(__('laravel-filament-approval::model.approval.new_values')),
-                    ]
-                ),
-                Infolists\Components\Section::make(
+                    ]),
+                \Filament\Schemas\Components\Section::make(
                     [
                         Infolists\Components\KeyValueEntry::make('approvable.now_values_for_display'),
                     ]

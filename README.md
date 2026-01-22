@@ -41,22 +41,21 @@ php artisan vendor:publish --tag="filament-approval-config"
 
 配置文件允许你自定义以下内容：
 
--   **模型 (Models)**：覆盖资源默认使用的模型（如 `ApprovalFlow`, `ApprovalTask` 等）。
 -   **可审批模型 (Approvable Models)**：定义哪些模型需要进入审批流程。
     -   键名 (Key)：模型的类名。
-    -   键值 (Value)：对应显示的国际化 Label Key。
+    -   键值 (Value)：对应显示的 Label。
 -   **审批者模型 (Approver Models)**：可以在审批流步骤中被选为审批者的模型列表（如：角色、账号）。
 -   **失效天数选项 (Expiration Days)**：在创建审批流时，可供选择的过期天数选项（以天为单位）。
 -   **导航 (Navigation)**：自定义资源在侧边栏的排序和图标。
 
 ```php
-// config/filament-approval.php 示例
+// config/laravel-filament-approval.php 示例
 
 return [
     // ...
     'approvable_models' => [
-        // 示例：左侧为模型类，右侧为国际化 key
-        // \App\Models\User::class => 'filament-approval::model.user.label',
+        // 示例：左侧为模型类，右侧为 Label
+        // \App\Models\Post::class => 'Post',
     ],
 
     'approver_models' => [

@@ -5,14 +5,14 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\Schemas;
 use Filament\Infolists;
 use PHPTools\Approval\Enums\ApprovalFlowType;
 
-class ApprovalFlowInfolist
+class ApprovalFlowInfolistV4
 {
     public static function schema(): array
     {
         $approvableModels = config('filament-approval.approvable_models');
 
         return [
-            Infolists\Components\Section::make(__('laravel-filament-approval::model.basic_information'))
+            \Filament\Schemas\Components\Section::make(__('laravel-filament-approval::model.basic_information'))
                 ->schema([
                     Infolists\Components\TextEntry::make('name')
                         ->label(__('laravel-filament-approval::model.approval_flow.name'))
@@ -29,7 +29,7 @@ class ApprovalFlowInfolist
                         ->label(__('laravel-filament-approval::model.approval_flow.expiration_days'))
                         ->inlineLabel()
                         ->formatStateUsing(static fn ($state) => $state ? (int) ($state / 86400) : null),
-                ]),
+                ])->columnSpanFull(),
             Infolists\Components\RepeatableEntry::make('steps')
                 ->label(__('laravel-filament-approval::model.approval_flow_step.label'))
                 ->columns(2)

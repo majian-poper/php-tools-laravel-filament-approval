@@ -7,25 +7,28 @@ use Filament\Tables\Table;
 use PHPTools\Approval\Enums\ApprovalFlowType;
 use PHPTools\Approval\Enums\ApprovalStatus;
 use PHPTools\Approval\Models\ApprovalTask;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalPlugin;
 
 class ApprovalTasksTable
 {
     public static function table(Table $table): Table
     {
+        $version = FilamentApprovalPlugin::getFilamentMajorVersion();
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label(__('filament-approval::model.id')),
+                    ->label(__('laravel-filament-approval::model.id')),
                 Tables\Columns\TextColumn::make('title')
-                    ->label(__('filament-approval::model.approval_task.title')),
+                    ->label(__('laravel-filament-approval::model.approval_task.title')),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label(__('filament-approval::model.approval_task.user')),
+                    ->label(__('laravel-filament-approval::model.approval_task.user')),
                 Tables\Columns\TextColumn::make('approvals_count')
-                    ->label(__('filament-approval::model.approval_task.approvals_count'))
+                    ->label(__('laravel-filament-approval::model.approval_task.approvals_count'))
                     ->counts('approvals')
-                    ->suffix(' ' . __('filament-approval::model.count_suffix')),
+                    ->suffix(' ' . __('laravel-filament-approval::model.count_suffix')),
                 Tables\Columns\TextColumn::make('flow_type')
-                    ->label(__('filament-approval::model.approval_task.flow_type'))
+                    ->label(__('laravel-filament-approval::model.approval_task.flow_type'))
                     ->formatStateUsing(
                         static fn(ApprovalFlowType $state, ApprovalTask $record) => \sprintf(
                             '%s (%d / %d)',
@@ -35,17 +38,20 @@ class ApprovalTasksTable
                         )
                     ),
                 Tables\Columns\TextColumn::make('status')
-                    ->label(__('filament-approval::model.approval_task.status'))
+                    ->label(__('laravel-filament-approval::model.approval_task.status'))
                     ->formatStateUsing(static fn(ApprovalStatus $state) => $state->getLabel())
                     ->color(fn($record): string => $record->color ?? 'gray')
                     ->badge(),
                 Tables\Columns\TextColumn::make('approved_at')
-                    ->label(__('filament-approval::model.approval_task.approved_at')),
+                    ->label(__('laravel-filament-approval::model.approval_task.approved_at')),
                 Tables\Columns\TextColumn::make('rolled_back_at')
-                    ->label(__('filament-approval::model.approval_task.rolled_back_at')),
+                    ->label(__('laravel-filament-approval::model.approval_task.rolled_back_at')),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                ([
+                    3 => \Filament\Tables\Actions\ViewAction::class,
+                    4 => \Filament\Actions\ViewAction::class,
+                ][$version])::make(),
             ])
             ->defaultSort('id', 'desc');
     }

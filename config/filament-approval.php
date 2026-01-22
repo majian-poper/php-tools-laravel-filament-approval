@@ -1,15 +1,8 @@
 <?php
 
 return [
-    'models' => [
-        'approval_flow' => \PHPTools\Approval\Models\ApprovalFlow::class,
-        'approval_flow_step' => \PHPTools\Approval\Models\ApprovalFlowStep::class,
-        'approval_task' => \PHPTools\Approval\Models\ApprovalTask::class,
-        'approval' => \PHPTools\Approval\Models\Approval::class,
-    ],
-
     'approvable_models' => [
-        // \App\Models\User::class => 'User',
+        // \App\Models\Post::class => 'Post',
     ],
 
     'approver_models' => [

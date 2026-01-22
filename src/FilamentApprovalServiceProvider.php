@@ -9,8 +9,13 @@ class FilamentApprovalServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package->name('filament-approval')
+        $package->name('laravel-filament-approval')
             ->hasConfigFile()
             ->hasTranslations();
+    }
+
+    public function packageBooted(): void
+    {
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'laravel-filament-approval');
     }
 }
