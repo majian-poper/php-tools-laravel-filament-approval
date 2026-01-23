@@ -1,0 +1,97 @@
+<?php
+
+namespace PHPTools\LaravelFilamentApproval;
+
+use Filament\Contracts\Plugin;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Arr;
+use PHPTools\Approval\Contracts\Approver;
+
+class FilamentApprovalTaskPlugin implements Plugin
+{
+    use Concerns\InteractsWithPlugin;
+
+    protected bool $enableApproval = true;
+
+    protected bool | \Closure $approverMode = false;
+
+    protected array | \Closure $currentApprovers = [];
+
+    protected null | Authenticatable | \Closure $currentUser = null;
+
+    protected ?\Closure $valuesMask = null;
+
+    public static function getPluginId(): string
+    {
+        return 'laravel-filament-approval-task';
+    }
+
+    public static function getResourceClass(): string
+    {
+        if (Helper::getFilamentVersion() === 3) {
+            return Resources\ApprovalTasks\ApprovalTaskResourceV3::class;
+        }
+
+        return Resources\ApprovalTasks\ApprovalTaskResourceV4::class;
+    }
+
+    public static function getRouteSlug(): string
+    {
+        return 'approval-tasks';
+    }
+
+    public function approverMode(bool | \Closure $condition = true): static
+    {
+        $this->approverMode = $condition;
+
+        return $this;
+    }
+
+    public function isApproverMode(): bool
+    {
+        return $this->approverMode = (bool) $this->evaluate($this->approverMode);
+    }
+
+    public function currentApprovers(array | \Closure $approvers): static
+    {
+        $this->currentApprovers = $approvers;
+
+        return $this;
+    }
+
+    public function getCurrentApprovers(): array
+    {
+        $currentApprovers = Arr::from($this->evaluate($this->currentApprovers));
+
+        return $this->currentApprovers = \array_filter(
+            $currentApprovers,
+            static fn($approver): bool => $approver instanceof Approver
+        );
+    }
+
+    public function currentUser(null | Authenticatable | \Closure $user): static
+    {
+        $this->currentUser = $user;
+
+        return $this;
+    }
+
+    public function getCurrentUser(): ?Authenticatable
+    {
+        $user = $this->evaluate($this->currentUser);
+
+        return $this->currentUser = $user instanceof Authenticatable ? $user : null;
+    }
+
+    public function valuesMask(\Closure $mask): static
+    {
+        $this->valuesMask = $mask;
+
+        return $this;
+    }
+
+    public function getValuesMask(): \Closure
+    {
+        return $this->valuesMask ??= static fn(array $values): array => $values;
+    }
+}

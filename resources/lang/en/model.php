@@ -3,8 +3,8 @@
 return [
     'id' => 'ID',
     'created_at' => 'Created at',
+    'updated_at' => 'Updated at',
     'count_suffix' => 'Items',
-    'basic_information' => 'Basic information',
 
     'approval' => [
         'label' => 'Approval',
@@ -60,6 +60,5 @@ return [
         'approved_at' => 'Approved at',
         'rolled_back_at' => 'Rolled back at',
         'approvals_count' => 'Approvals count',
-        'os' => 'Operating system',
     ],
 ];

@@ -3,8 +3,8 @@
 return [
     'id' => 'ID',
     'created_at' => '作成日時',
+    'updated_at' => '更新日時',
     'count_suffix' => '件',
-    'basic_information' => '基本情報',
 
     'approval' => [
         'label' => '変更申請',
@@ -60,6 +60,5 @@ return [
         'approved_at' => '承認日時',
         'rolled_back_at' => 'ロールバック日時',
         'approvals_count' => '変更申請件数',
-        'os' => '操作システム',
     ],
 ];

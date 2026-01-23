@@ -18,7 +18,7 @@ class StepsRelationManager extends RelationManager
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return __('laravel-filament-approval::model.approval_step.label');
+        return __('filament-approval::model.approval_step.label');
     }
 
     #[On('refreshApprovalSteps')]
@@ -35,8 +35,8 @@ class StepsRelationManager extends RelationManager
     public function table(Tables\Table $table): Tables\Table
     {
         return $table
-            ->heading(__('laravel-filament-approval::model.approval_step.label'))
-            ->modelLabel(__('laravel-filament-approval::model.approval_step.label'))
+            ->heading(__('filament-approval::model.approval_step.label'))
+            ->modelLabel(__('filament-approval::model.approval_step.label'))
             ->columns($this->columns())
             ->defaultSort('order_number', 'asc')
             ->paginated(false)
@@ -47,28 +47,28 @@ class StepsRelationManager extends RelationManager
     {
         return [
             Tables\Columns\TextColumn::make('order_number')
-                ->label(__('laravel-filament-approval::model.approval_step.order_number')),
+                ->label(__('filament-approval::model.approval_step.order_number')),
             Tables\Columns\TextColumn::make('approver.approver_title')
-                ->label(__('laravel-filament-approval::model.approval_step.approver')),
+                ->label(__('filament-approval::model.approval_step.approver')),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->label(__('laravel-filament-approval::model.approval_step.status'))
+                ->label(__('filament-approval::model.approval_step.status'))
                 ->formatStateUsing(static fn(ApprovalStatus $state) => $state->getLabel())
                 ->color(
-                    fn(ApprovalStatus $state): string => match ($state->value) {
-                        'pending' => 'warning',
-                        'approved' => 'success',
-                        'rejected' => 'danger',
+                    static fn(ApprovalStatus $state): string => match ($state) {
+                        ApprovalStatus::PENDING => 'warning',
+                        ApprovalStatus::APPROVED => 'success',
+                        ApprovalStatus::REJECTED => 'danger',
                         default => 'secondary',
                     }
                 ),
             Tables\Columns\TextColumn::make('user.approver_title')
-                ->label(__('laravel-filament-approval::model.approval_step.user')),
+                ->label(__('filament-approval::model.approval_step.user')),
             Tables\Columns\TextColumn::make('comment')
-                ->label(__('laravel-filament-approval::model.approval_step.comment')),
+                ->label(__('filament-approval::model.approval_step.comment')),
             Tables\Columns\TextColumn::make('approved_at')
-                ->label(__('laravel-filament-approval::model.approval_step.approved_at'))
-                ->dateTime('Y-m-d H:i'),
+                ->label(__('filament-approval::model.approval_step.approved_at'))
+                ->dateTime('Y-m-d H:i:s'),
         ];
     }
 

@@ -3,12 +3,17 @@
 namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use PHPTools\LaravelFilamentApproval\Concerns\HasRedirectToIndex;
-use PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\ApprovalFlowResource;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalFlowPlugin;
 
 class CreateApprovalFlow extends CreateRecord
 {
-    use HasRedirectToIndex;
+    public static function getResource(): string
+    {
+        return FilamentApprovalFlowPlugin::getResourceClass();
+    }
 
-    protected static string $resource = ApprovalFlowResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }

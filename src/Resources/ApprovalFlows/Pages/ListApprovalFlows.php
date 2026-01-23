@@ -4,11 +4,19 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\ApprovalFlowResource;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalFlowPlugin;
 
 class ListApprovalFlows extends ListRecords
 {
-    protected static string $resource = ApprovalFlowResource::class;
+    public static function getResource(): string
+    {
+        return FilamentApprovalFlowPlugin::getResourceClass();
+    }
+
+    public function getTabs(): array
+    {
+        return FilamentApprovalFlowPlugin::get()->getTabs();
+    }
 
     protected function getHeaderActions(): array
     {

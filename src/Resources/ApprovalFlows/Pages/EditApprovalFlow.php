@@ -3,12 +3,17 @@
 namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\Pages;
 
 use Filament\Resources\Pages\EditRecord;
-use PHPTools\LaravelFilamentApproval\Concerns\HasRedirectToIndex;
-use PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows\ApprovalFlowResource;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalFlowPlugin;
 
 class EditApprovalFlow extends EditRecord
 {
-    use HasRedirectToIndex;
+    public static function getResource(): string
+    {
+        return FilamentApprovalFlowPlugin::getResourceClass();
+    }
 
-    protected static string $resource = ApprovalFlowResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }
