@@ -12,11 +12,6 @@ return [
 
     'expiration_days' => [1, 2, 3, 4, 5, 6, 7],
 
-    'navigation_sort' => [
-        'approval_flow' => 1,
-        'approval_task' => 2,
-    ],
-
     'navigation_icon' => [
         'approval_flow' => 'heroicon-o-rectangle-stack',
         'approval_task' => 'heroicon-o-rectangle-stack',

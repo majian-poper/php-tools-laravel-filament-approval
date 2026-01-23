@@ -64,11 +64,6 @@ return [
     ],
 
     'expiration_days' => [1, 2, 3, 4, 5, 6, 7], // 审批流可选的过期天数
-
-    'navigation_sort' => [
-        'approval_flow' => 1,
-        'approval_task' => 2,
-    ],
 ];
 ```
 
