@@ -1,0 +1,31 @@
+{
+    "name": "php-tools/laravel-filament-approval",
+    "description": "Filament integration for php-tools/laravel-approval",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^3.0|^4.0",
+        "php-tools/laravel-approval": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPTools\\LaravelFilamentApproval\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PHPTools\\LaravelFilamentApproval\\FilamentApprovalServiceProvider"
+            ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/majian-poper/php-tools-laravel-approval.git"
+        }
+    ],
+    "require-dev": {
+        "laravel/pint": "^1.27"
+    }
+}
