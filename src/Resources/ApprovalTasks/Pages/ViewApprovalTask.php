@@ -4,6 +4,7 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks\Pages;
 
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Schemas;
 use Filament\Resources\Pages\ViewRecord;
 use Livewire\Attributes\On;
 use PHPTools\Approval\Models\ApprovalTask;
@@ -62,7 +63,7 @@ class ViewApprovalTask extends ViewRecord
             ->defaultColor('success')
             ->icon('heroicon-m-check')
             ->action(
-                function (Actions\Action $action, Forms\Form $form, ApprovalTask $record): void {
+                function (Actions\Action $action, Forms\Form | Schemas\Schema $form, ApprovalTask $record): void {
                     $state = $form->getState();
 
                     try {
@@ -87,7 +88,7 @@ class ViewApprovalTask extends ViewRecord
             ->defaultColor('danger')
             ->icon('heroicon-m-x-mark')
             ->action(
-                function (Actions\Action $action, Forms\Form $form, ApprovalTask $record): void {
+                function (Actions\Action $action, Forms\Form | Schemas\Schema $form, ApprovalTask $record): void {
                     $state = $form->getState();
 
                     try {
