@@ -7,7 +7,7 @@ return [
     'count_suffix' => '件',
 
     'approval' => [
-        'label' => '変更申請',
+        'label' => '申請',
         'order_number' => '順番',
         'approvable' => '承認対象',
         'approvable_type' => '承認対象タイプ',
@@ -47,7 +47,7 @@ return [
     ],
 
     'approval_task' => [
-        'label' => '変更申請承認',
+        'label' => '申請承認',
         'title' => 'タイトル',
         'user' => '申請者',
         'flow_type' => '承認フロータイプ',
@@ -59,6 +59,6 @@ return [
         'expires_at' => '有効期限',
         'approved_at' => '承認日時',
         'rolled_back_at' => 'ロールバック日時',
-        'approvals_count' => '変更申請件数',
+        'approvals_count' => '申請件数',
     ],
 ];
