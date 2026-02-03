@@ -11,9 +11,11 @@ class FilamentApprovalTaskPlugin implements Plugin
 {
     use Concerns\InteractsWithPlugin;
 
-    protected bool $enableApproval = true;
-
     protected bool | \Closure $approverMode = false;
+
+    protected bool | \Closure $canBeRolledBack = false;
+
+    protected bool | \Closure $withApprovalsRelation = true;
 
     protected array | \Closure $currentApprovers = [];
 
@@ -50,6 +52,30 @@ class FilamentApprovalTaskPlugin implements Plugin
     public function isApproverMode(): bool
     {
         return $this->approverMode = (bool) $this->evaluate($this->approverMode);
+    }
+
+    public function canBeRolledBack(bool | \Closure $condition = true): static
+    {
+        $this->canBeRolledBack = $condition;
+
+        return $this;
+    }
+
+    public function isCanBeRolledBack(): bool
+    {
+        return $this->canBeRolledBack = (bool) $this->evaluate($this->canBeRolledBack);
+    }
+
+    public function withApprovalsRelation(bool | \Closure $condition = true): static
+    {
+        $this->withApprovalsRelation = $condition;
+
+        return $this;
+    }
+
+    public function isWithApprovalsRelation(): bool
+    {
+        return $this->withApprovalsRelation = (bool) $this->evaluate($this->withApprovalsRelation);
     }
 
     public function currentApprovers(array | \Closure $approvers): static

@@ -5,6 +5,7 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalFlows;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalFlowPlugin;
 
 class ApprovalFlowResourceV3 extends Resource
 {
@@ -17,6 +18,8 @@ class ApprovalFlowResourceV3 extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return Schemas\ApprovalFlowInfolist::configure($infolist);
+        return FilamentApprovalFlowPlugin::get()->configInfolist(
+            Schemas\ApprovalFlowInfolist::configure($infolist)
+        );
     }
 }

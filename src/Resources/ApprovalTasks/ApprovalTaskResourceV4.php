@@ -4,6 +4,7 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks;
 
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalTaskPlugin;
 
 class ApprovalTaskResourceV4 extends Resource
 {
@@ -11,6 +12,8 @@ class ApprovalTaskResourceV4 extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return Schemas\ApprovalTaskInfolist::configure($schema);
+        return FilamentApprovalTaskPlugin::get()->configInfolist(
+            Schemas\ApprovalTaskInfolist::configure($schema)
+        );
     }
 }

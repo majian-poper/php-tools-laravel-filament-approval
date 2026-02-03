@@ -4,6 +4,7 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks;
 
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use PHPTools\LaravelFilamentApproval\FilamentApprovalTaskPlugin;
 
 class ApprovalTaskResourceV3 extends Resource
 {
@@ -11,6 +12,8 @@ class ApprovalTaskResourceV3 extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        return Schemas\ApprovalTaskInfolist::configure($infolist);
+        return FilamentApprovalTaskPlugin::get()->configInfolist(
+            Schemas\ApprovalTaskInfolist::configure($infolist)
+        );
     }
 }

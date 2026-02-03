@@ -4,6 +4,7 @@ namespace PHPTools\LaravelFilamentApproval\Concerns;
 
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
@@ -20,6 +21,10 @@ trait InteractsWithPlugin
     protected array | \Closure $filters = [];
 
     protected ?\Closure $modifyQueryUsing = null;
+
+    protected ?\Closure $configTableUsing = null;
+
+    protected ?\Closure $configInfolistUsing = null;
 
     public static function make(): static
     {
@@ -109,6 +114,41 @@ trait InteractsWithPlugin
 
     public function modifyQuery(Builder $query): Builder
     {
-        return $this->evaluate($this->modifyQueryUsing, ['query' => $query]) ?? $query;
+        $this->evaluate($this->modifyQueryUsing, ['query' => $query]);
+
+        return $query;
+    }
+
+    public function configTableUsing(?\Closure $callback): static
+    {
+        $this->configTableUsing = $callback;
+
+        return $this;
+    }
+
+    public function configTable(Table $table): Table
+    {
+        $this->evaluate($this->configTableUsing, ['table' => $table]);
+
+        return $table;
+    }
+
+    public function configInfolistUsing(?\Closure $callback): static
+    {
+        $this->configInfolistUsing = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param  \Filament\Infolists\Infolist | \Filament\Schemas\Schema $infolist
+     *
+     * @return \Filament\Infolists\Infolist | \Filament\Schemas\Schema
+     */
+    public function configInfolist($infolist)
+    {
+        $this->evaluate($this->configInfolistUsing, ['infolist' => $infolist]);
+
+        return $infolist;
     }
 }

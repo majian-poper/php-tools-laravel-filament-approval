@@ -39,9 +39,9 @@ trait InteractsWithApprovalTasks
 
     public static function getEloquentQuery(): Builder
     {
-        $plugin = FilamentApprovalTaskPlugin::get();
+        $builder = parent::getEloquentQuery()->with(['steps'])->whereHas('approvals');
 
-        $builder = $plugin->modifyQuery(parent::getEloquentQuery());
+        $plugin = FilamentApprovalTaskPlugin::get();
 
         if ($plugin->isApproverMode()) {
             $builder->when(
@@ -53,12 +53,14 @@ trait InteractsWithApprovalTasks
             $builder->whereMorphedTo('user', $plugin->getCurrentUser());
         }
 
-        return $builder->with(['steps'])->whereHas('approvals');
+        return $plugin->modifyQuery($builder);
     }
 
     public static function table(Table $table): Table
     {
-        return Tables\ApprovalTasksTable::configure($table);
+        return FilamentApprovalTaskPlugin::get()->configTable(
+            Tables\ApprovalTasksTable::configure($table)
+        );
     }
 
     public static function getPages(): array
@@ -71,9 +73,13 @@ trait InteractsWithApprovalTasks
 
     public static function getRelations(): array
     {
-        return [
-            RelationManagers\ApprovalsRelationManager::class,
-            RelationManagers\StepsRelationManager::class,
-        ];
+        $plugin = FilamentApprovalTaskPlugin::get();
+
+        return \array_filter(
+            [
+                $plugin->isWithApprovalsRelation() ? RelationManagers\ApprovalsRelationManager::class : null,
+                RelationManagers\StepsRelationManager::class,
+            ]
+        );
     }
 }

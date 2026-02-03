@@ -4,8 +4,8 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks\Pages;
 
 use Filament\Actions;
 use Filament\Forms;
-use Filament\Schemas;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas;
 use Livewire\Attributes\On;
 use PHPTools\Approval\Models\ApprovalTask;
 use PHPTools\LaravelFilamentApproval\FilamentApprovalTaskPlugin;
@@ -47,7 +47,7 @@ class ViewApprovalTask extends ViewRecord
             ];
         }
 
-        if ($this->record->canBeRolledBackBy($user)) {
+        if ($plugin->isCanBeRolledBack() && $this->record->canBeRolledBackBy($user)) {
             return [
                 $this->getRollbackAction(),
             ];
