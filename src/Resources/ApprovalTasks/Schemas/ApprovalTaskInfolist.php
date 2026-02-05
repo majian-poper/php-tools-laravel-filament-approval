@@ -7,6 +7,7 @@ use Filament\Schemas;
 use Illuminate\Support\Str;
 use PHPTools\Approval\Contracts\ColumnResolver;
 use PHPTools\Approval\Enums\ApprovalStatus;
+use PHPTools\Approval\Models\ApprovalTask;
 use PHPTools\LaravelFilamentApproval\Helper;
 use UAParser\Parser;
 
@@ -18,7 +19,7 @@ class ApprovalTaskInfolist
      */
     public static function configure($infolist)
     {
-        return $infolist->schema(static::schema());
+        return $infolist->schema(static::schema())->columns(1);
     }
 
     protected static function schema(): array
@@ -26,7 +27,16 @@ class ApprovalTaskInfolist
         return [
             static::section()
                 ->schema(static::sectionSchema())
-                ->columns(2)
+                ->columns(2),
+            static::section()
+                ->schema(
+                    [
+                        Infolists\Components\TextEntry::make('description')
+                            ->label(__('filament-approval::model.approval_task.description'))
+                            ->html()
+                    ]
+                )
+                ->visible(static fn(ApprovalTask $record): bool => filled($record->description))
                 ->columnSpanFull(),
         ];
     }

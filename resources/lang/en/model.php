@@ -49,6 +49,7 @@ return [
     'approval_task' => [
         'label' => 'Approval task',
         'title' => 'Title',
+        'description' => 'Description',
         'user' => 'Applicant',
         'flow_type' => 'Approval flow type',
         'status' => 'Status',
