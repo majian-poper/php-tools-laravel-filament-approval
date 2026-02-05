@@ -49,6 +49,7 @@ return [
     'approval_task' => [
         'label' => '申請承認',
         'title' => 'タイトル',
+        'description' => '説明',
         'user' => '申請者',
         'flow_type' => '承認フロータイプ',
         'status' => 'ステータス',
