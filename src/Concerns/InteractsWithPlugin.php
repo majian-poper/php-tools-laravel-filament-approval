@@ -33,7 +33,12 @@ trait InteractsWithPlugin
 
     public static function get(): static
     {
-        return filament(static::getPluginId());
+        try {
+            return filament(static::getPluginId());
+        } catch (\Throwable) {
+            // Non web environment fallback, e.g. during artisan commands
+            return static::make();
+        }
     }
 
     abstract public static function getPluginId(): string;
