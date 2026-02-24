@@ -7,7 +7,6 @@ use Filament\Schemas;
 use Illuminate\Support\Str;
 use PHPTools\Approval\Contracts\ColumnResolver;
 use PHPTools\Approval\Enums\ApprovalStatus;
-use PHPTools\Approval\Models\ApprovalTask;
 use PHPTools\LaravelFilamentApproval\Helper;
 use UAParser\Parser;
 
@@ -26,18 +25,11 @@ class ApprovalTaskInfolist
     {
         return [
             static::section()
-                ->schema(static::sectionSchema())
-                ->columns(2),
-            static::section()
-                ->schema(
-                    [
-                        Infolists\Components\TextEntry::make('description')
-                            ->label(__('filament-approval::model.approval_task.description'))
-                            ->html()
-                    ]
-                )
-                ->visible(static fn(ApprovalTask $record): bool => filled($record->description))
+                ->schema(static::descriptionSectionSchema())
                 ->columnSpanFull(),
+            static::section()
+                ->schema(static::taskSectionSchema())
+                ->columns(2),
         ];
     }
 
@@ -53,14 +45,24 @@ class ApprovalTaskInfolist
         return Schemas\Components\Section::make();
     }
 
-    protected static function sectionSchema(): array
+    protected static function descriptionSectionSchema(): array
+    {
+        return [
+            Infolists\Components\TextEntry::make('title')
+                ->label(__('filament-approval::model.approval_task.title'))
+                ->inlineLabel(),
+            Infolists\Components\TextEntry::make('description')
+                ->label(__('filament-approval::model.approval_task.description'))
+                ->html()
+                ->visible(static fn($state): bool => filled($state)),
+        ];
+    }
+
+    protected static function taskSectionSchema(): array
     {
         $schema = [
             Infolists\Components\TextEntry::make('user.name')
                 ->label(__('filament-approval::model.approval_task.user'))
-                ->inlineLabel(),
-            Infolists\Components\TextEntry::make('title')
-                ->label(__('filament-approval::model.approval_task.title'))
                 ->inlineLabel(),
             Infolists\Components\TextEntry::make('status')
                 ->label(__('filament-approval::model.approval_task.status'))
