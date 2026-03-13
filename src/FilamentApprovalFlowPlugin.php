@@ -3,7 +3,6 @@
 namespace PHPTools\LaravelFilamentApproval;
 
 use Filament\Contracts\Plugin;
-use Illuminate\Support\Arr;
 
 class FilamentApprovalFlowPlugin implements Plugin
 {
@@ -66,7 +65,7 @@ class FilamentApprovalFlowPlugin implements Plugin
 
     public function getApprovableModels(): array
     {
-        return $this->approvableModels = Arr::from($this->evaluate($this->approvableModels));
+        return (array) $this->evaluate($this->approvableModels);
     }
 
     public function approverModels(array | \Closure $approverModels): static
@@ -78,7 +77,7 @@ class FilamentApprovalFlowPlugin implements Plugin
 
     public function getApproverModels(): array
     {
-        return $this->approverModels = Arr::from($this->evaluate($this->approverModels));
+        return (array) $this->evaluate($this->approverModels);
     }
 
     public function approverTitleAttribute(string $attribute): static

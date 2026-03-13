@@ -6,7 +6,6 @@ use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 
 trait InteractsWithPlugin
 {
@@ -95,7 +94,7 @@ trait InteractsWithPlugin
 
     public function getTabs(): array
     {
-        return $this->tabs = Arr::from($this->evaluate($this->tabs));
+        return (array) $this->evaluate($this->tabs);
     }
 
     public function filters(array | \Closure $filters): static
@@ -107,7 +106,7 @@ trait InteractsWithPlugin
 
     public function getFilters(): array
     {
-        return $this->filters = Arr::from($this->evaluate($this->filters));
+        return (array) $this->evaluate($this->filters);
     }
 
     public function modifyQueryUsing(?\Closure $callback): static

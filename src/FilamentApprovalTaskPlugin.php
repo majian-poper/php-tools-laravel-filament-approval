@@ -4,7 +4,6 @@ namespace PHPTools\LaravelFilamentApproval;
 
 use Filament\Contracts\Plugin;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Arr;
 use PHPTools\Approval\Contracts\Approver;
 
 class FilamentApprovalTaskPlugin implements Plugin
@@ -51,7 +50,7 @@ class FilamentApprovalTaskPlugin implements Plugin
 
     public function isApproverMode(): bool
     {
-        return $this->approverMode = (bool) $this->evaluate($this->approverMode);
+        return (bool) $this->evaluate($this->approverMode);
     }
 
     public function canBeRolledBack(bool | \Closure $condition = true): static
@@ -63,7 +62,7 @@ class FilamentApprovalTaskPlugin implements Plugin
 
     public function isCanBeRolledBack(): bool
     {
-        return $this->canBeRolledBack = (bool) $this->evaluate($this->canBeRolledBack);
+        return (bool) $this->evaluate($this->canBeRolledBack);
     }
 
     public function withApprovalsRelation(bool | \Closure $condition = true): static
@@ -75,7 +74,7 @@ class FilamentApprovalTaskPlugin implements Plugin
 
     public function isWithApprovalsRelation(): bool
     {
-        return $this->withApprovalsRelation = (bool) $this->evaluate($this->withApprovalsRelation);
+        return (bool) $this->evaluate($this->withApprovalsRelation);
     }
 
     public function currentApprovers(array | \Closure $approvers): static
@@ -87,10 +86,8 @@ class FilamentApprovalTaskPlugin implements Plugin
 
     public function getCurrentApprovers(): array
     {
-        $currentApprovers = Arr::from($this->evaluate($this->currentApprovers));
-
-        return $this->currentApprovers = \array_filter(
-            $currentApprovers,
+        return \array_filter(
+            (array) $this->evaluate($this->currentApprovers),
             static fn($approver): bool => $approver instanceof Approver
         );
     }
@@ -106,7 +103,7 @@ class FilamentApprovalTaskPlugin implements Plugin
     {
         $user = $this->evaluate($this->currentUser);
 
-        return $this->currentUser = $user instanceof Authenticatable ? $user : null;
+        return $user instanceof Authenticatable ? $user : null;
     }
 
     public function valuesMask(\Closure $mask): static
