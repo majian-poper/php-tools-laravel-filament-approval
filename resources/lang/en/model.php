@@ -30,14 +30,17 @@ return [
 
     'approval_flow_step' => [
         'label' => 'Approval flow step',
+        'group_label' => 'Approval group :order',
         'order_number' => 'Order number',
         'approver' => 'Approver',
         'approver_type' => 'Approver type',
         'approver_id' => 'Approver ID',
+        'add_approver' => 'Add approver',
     ],
 
     'approval_step' => [
         'label' => 'Approval step',
+        'group_label' => 'Approval group',
         'order_number' => 'Order number',
         'status' => 'Status',
         'approver' => 'Approver',

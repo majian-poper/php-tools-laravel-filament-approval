@@ -39,13 +39,29 @@ class ApprovalFlowForm
                 ->label(__('filament-approval::model.approval_flow.flow_type'))
                 ->options(ApprovalFlowType::options())
                 ->required(),
-            Forms\Components\Repeater::make('steps')
-                ->label(__('filament-approval::model.approval_flow_step.label'))
-                ->relationship('steps')
-                ->orderColumn('order_number')
-                ->schema([static::approverModelSelect()])
-                ->columnSpanFull(),
+            static::stepsGroup('steps_one', 1),
+            static::stepsGroup('steps_two', 2),
+            static::stepsGroup('steps_three', 3),
+            static::stepsGroup('steps_four', 4),
+            static::stepsGroup('steps_five', 5),
         ];
+    }
+
+    protected static function stepsGroup(string $relationship, int $orderNumber): Forms\Components\Repeater
+    {
+        $beforeSaving = static fn(array $data): array => \array_merge($data, ['order_number' => $orderNumber]);
+
+        return Forms\Components\Repeater::make($relationship)
+            ->label(__('filament-approval::model.approval_flow_step.group_label', ['order' => $orderNumber]))
+            ->relationship($relationship)
+            ->schema([static::approverModelSelect()])
+            ->addActionLabel(__('filament-approval::model.approval_flow_step.add_approver'))
+            ->grid(3)
+            ->maxItems(3)
+            ->defaultItems(0)
+            ->columnSpanFull()
+            ->mutateRelationshipDataBeforeCreateUsing($beforeSaving)
+            ->mutateRelationshipDataBeforeSaveUsing($beforeSaving);
     }
 
     protected static function approverModelSelect(): Forms\Components\MorphToSelect
@@ -66,6 +82,7 @@ class ApprovalFlowForm
         return Forms\Components\MorphToSelect::make('approver')
             ->label(__('filament-approval::model.approval_flow_step.approver'))
             ->types($types)
+            ->preload()
             ->required();
     }
 }
