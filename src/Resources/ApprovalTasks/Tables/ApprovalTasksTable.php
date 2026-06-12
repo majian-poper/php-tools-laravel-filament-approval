@@ -45,8 +45,8 @@ class ApprovalTasksTable
                     static fn(ApprovalFlowType $state, ApprovalTask $record) => \sprintf(
                         '%s (%d / %d)',
                         $state->getLabel(),
-                        $record->steps->filter->isApproved()->count(),
-                        $record->steps->count()
+                        $record->steps->filter->isApproved()->groupBy('order_number')->count(),
+                        $record->steps->groupBy('order_number')->count()
                     )
                 ),
             Tables\Columns\TextColumn::make('status')

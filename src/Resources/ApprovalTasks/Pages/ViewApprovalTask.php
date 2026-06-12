@@ -40,7 +40,7 @@ class ViewApprovalTask extends ViewRecord
             return [];
         }
 
-        if ($this->record->canBeChangedStatusBy($user)) {
+        if ($this->record->canStatusBeChangedBy($user)) {
             return [
                 $this->getApproveAction(),
                 $this->getRejectAction(),

@@ -30,14 +30,17 @@ return [
 
     'approval_flow_step' => [
         'label' => '承認フローステップ',
+        'group_label' => '承認グループ :order',
         'order_number' => '順番',
         'approver' => '承認者',
         'approver_type' => '承認者タイプ',
         'approver_id' => '承認者ID',
+        'add_approver' => '承認者を追加',
     ],
 
     'approval_step' => [
         'label' => '承認ステップ',
+        'group_label' => '承認グループ',
         'order_number' => '順番',
         'status' => 'ステータス',
         'approver' => '承認者',

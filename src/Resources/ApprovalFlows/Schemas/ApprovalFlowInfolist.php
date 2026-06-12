@@ -25,11 +25,11 @@ class ApprovalFlowInfolist
                 ->schema(static::basicSectionSchema())
                 ->columns(2)
                 ->columnSpanFull(),
-            Infolists\Components\RepeatableEntry::make('steps')
-                ->label(__('filament-approval::model.approval_flow_step.label'))
-                ->schema(static::stepSectionSchema())
-                ->columns(2)
-                ->columnSpanFull(),
+            static::stepsGroup('steps_one', 1),
+            static::stepsGroup('steps_two', 2),
+            static::stepsGroup('steps_three', 3),
+            static::stepsGroup('steps_four', 4),
+            static::stepsGroup('steps_five', 5),
         ];
     }
 
@@ -68,13 +68,18 @@ class ApprovalFlowInfolist
         ];
     }
 
-    protected static function stepSectionSchema(): array
+    protected static function stepsGroup(string $relationship, int $orderNumber): Infolists\Components\RepeatableEntry
     {
-        return [
-            Infolists\Components\TextEntry::make('order_number')
-                ->label(__('filament-approval::model.approval_flow_step.order_number')),
-            Infolists\Components\TextEntry::make('approver.approver_title')
-                ->label(__('filament-approval::model.approval_flow_step.approver')),
-        ];
+        return Infolists\Components\RepeatableEntry::make($relationship)
+            ->label(__('filament-approval::model.approval_flow_step.group_label', ['order' => $orderNumber]))
+            ->schema([static::approverEntry()])
+            ->grid(3)
+            ->columnSpanFull();
+    }
+
+    protected static function approverEntry(): Infolists\Components\TextEntry
+    {
+        return Infolists\Components\TextEntry::make('approver.approver_title')
+            ->label(__('filament-approval::model.approval_flow_step.approver'));
     }
 }

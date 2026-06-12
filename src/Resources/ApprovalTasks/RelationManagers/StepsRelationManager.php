@@ -7,6 +7,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\On;
 use PHPTools\Approval\Enums\ApprovalStatus;
+use PHPTools\Approval\Models\ApprovalStep;
 
 class StepsRelationManager extends RelationManager
 {
@@ -38,6 +39,10 @@ class StepsRelationManager extends RelationManager
             ->heading(__('filament-approval::model.approval_step.label'))
             ->modelLabel(__('filament-approval::model.approval_step.label'))
             ->columns($this->columns())
+            ->defaultGroup(
+                static fn() => Tables\Grouping\Group::make('order_number')
+                    ->label(__('filament-approval::model.approval_step.group_label'))
+            )
             ->defaultSort('order_number', 'asc')
             ->paginated(false)
             ->poll(fn(): ?string => $this->shouldPoll() ? '3s' : null);
@@ -46,8 +51,6 @@ class StepsRelationManager extends RelationManager
     protected function columns(): array
     {
         return [
-            Tables\Columns\TextColumn::make('order_number')
-                ->label(__('filament-approval::model.approval_step.order_number')),
             Tables\Columns\TextColumn::make('approver.approver_title')
                 ->label(__('filament-approval::model.approval_step.approver')),
             Tables\Columns\TextColumn::make('status')
