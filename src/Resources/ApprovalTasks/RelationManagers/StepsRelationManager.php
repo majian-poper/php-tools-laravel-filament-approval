@@ -4,10 +4,13 @@ namespace PHPTools\LaravelFilamentApproval\Resources\ApprovalTasks\RelationManag
 
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\On;
 use PHPTools\Approval\Enums\ApprovalStatus;
-use PHPTools\Approval\Models\ApprovalStep;
 
 class StepsRelationManager extends RelationManager
 {
@@ -39,13 +42,32 @@ class StepsRelationManager extends RelationManager
             ->heading(__('filament-approval::model.approval_step.label'))
             ->modelLabel(__('filament-approval::model.approval_step.label'))
             ->columns($this->columns())
+            ->modifyQueryUsing(static fn(Builder $query): Builder => $query->reorder())
             ->defaultGroup(
                 static fn() => Tables\Grouping\Group::make('order_number')
                     ->label(__('filament-approval::model.approval_step.group_label'))
             )
-            ->defaultSort('order_number', 'asc')
             ->paginated(false)
             ->poll(fn(): ?string => $this->shouldPoll() ? '3s' : null);
+    }
+
+    public function getTableRecords(): EloquentCollection | Paginator | CursorPaginator
+    {
+        $records = parent::getTableRecords()
+            ->sortBy('order_number')
+            ->groupBy('order_number')
+            ->map(
+                static function (EloquentCollection $steps): EloquentCollection {
+                    if ($steps->filter->isPending()->count() === $steps->count()) {
+                        return $steps;
+                    }
+
+                    return $steps->reject->isPending();
+                }
+            )
+            ->flatten();
+
+        return EloquentCollection::make($records->all());
     }
 
     protected function columns(): array

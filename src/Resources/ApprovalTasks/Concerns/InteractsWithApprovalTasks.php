@@ -45,9 +45,9 @@ trait InteractsWithApprovalTasks
 
         if ($plugin->isApproverMode()) {
             $builder->when(
-                empty($currentApprovers = $plugin->getCurrentApprovers()),
-                static fn(Builder $query): Builder => $query->whereRaw('1 = 0'),
-                static fn(Builder $query): Builder => $query->whereApprovers(...$currentApprovers)
+                filled($currentApprovers = $plugin->getCurrentApprovers()),
+                static fn(Builder $query): Builder => $query->whereApprovers(...$currentApprovers),
+                static fn(Builder $query): Builder => $query->whereRaw('1 = 0')
             );
         } else {
             $builder->whereMorphedTo('user', $plugin->getCurrentUser());

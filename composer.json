@@ -11,7 +11,7 @@
         "php": "^8.2",
         "composer/semver": "^3.4",
         "filament/filament": "^3.0 || ^4.0",
-        "php-tools/laravel-approval": "0.2",
+        "php-tools/laravel-approval": "0.2.*",
         "ua-parser/uap-php": "^3.10"
     },
     "require-dev": {
